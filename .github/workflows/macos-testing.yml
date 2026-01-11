@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - 'src/**'
-      - 'test_macos_port.py'
-      - 'install_macos.sh'
+      - 'macos/test_macos_port.py'
+      - 'macos/install_macos.sh'
       - '.github/workflows/macos-testing.yml'
   pull_request:
     paths:
       - 'src/**'
-      - 'test_macos_port.py'
-      - 'install_macos.sh'
+      - 'macos/test_macos_port.py'
+      - 'macos/install_macos.sh'
       - '.github/workflows/macos-testing.yml'
 
 jobs:
@@ -49,11 +49,11 @@ jobs:
 
       - name: Run macOS port tests
         run: |
-          python test_macos_port.py
+          python macos/test_macos_port.py
 
       - name: Test hamster launcher script
         run: |
-          chmod +x hamster
+          chmod +x macos/hamster
           # Quick smoke test - just check if it can import without errors
           timeout 5 python src/hamster-cli.py --help || true
 
@@ -66,23 +66,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Make install script executable
-        run: chmod +x install_macos.sh
+        run: chmod +x macos/install_macos.sh
 
       - name: Test installation script (dry run)
         run: |
           # We don't want to actually install everything in CI,
           # just verify the script runs without syntax errors
-          bash -n install_macos.sh
+          bash -n macos/install_macos.sh
           echo "Install script syntax is valid"
 
       - name: Check required files exist
         run: |
-          test -f README_MACOS.md || (echo "README_MACOS.md missing" && exit 1)
-          test -f MACOS_QUICKSTART.md || (echo "MACOS_QUICKSTART.md missing" && exit 1)
-          test -f MACOS_PORT.md || (echo "MACOS_PORT.md missing" && exit 1)
-          test -f install_macos.sh || (echo "install_macos.sh missing" && exit 1)
-          test -f test_macos_port.py || (echo "test_macos_port.py missing" && exit 1)
-          test -f hamster || (echo "hamster launcher missing" && exit 1)
+          test -f macos/README_MACOS.md || (echo "macos/README_MACOS.md missing" && exit 1)
+          test -f macos/MACOS_QUICKSTART.md || (echo "macos/MACOS_QUICKSTART.md missing" && exit 1)
+          test -f macos/MACOS_PORT.md || (echo "macos/MACOS_PORT.md missing" && exit 1)
+          test -f macos/install_macos.sh || (echo "macos/install_macos.sh missing" && exit 1)
+          test -f macos/test_macos_port.py || (echo "macos/test_macos_port.py missing" && exit 1)
+          test -f macos/hamster || (echo "macos/hamster launcher missing" && exit 1)
           echo "All macOS port files present"
 
   lint:
@@ -106,4 +106,4 @@ jobs:
           flake8 --count --show-source --statistics \
             src/hamster/client/client_native.py \
             src/hamster/lib/configuration_macos.py \
-            test_macos_port.py
+            macos/test_macos_port.py

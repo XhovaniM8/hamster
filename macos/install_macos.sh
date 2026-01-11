@@ -29,22 +29,32 @@ echo "✓ GTK3 and Adwaita icons installed"
 echo ""
 
 echo "Step 3: Checking Python..."
-if ! command -v python3.11 &> /dev/null; then
-    echo "Python 3.11 not found. Installing..."
+PYTHON_CMD=""
+for py in python3.12 python3.11 python3; do
+    if command -v $py &> /dev/null; then
+        PYTHON_CMD=$py
+        echo "✓ Found $py"
+        break
+    fi
+done
+
+if [ -z "$PYTHON_CMD" ]; then
+    echo "Python 3.11 or later not found. Installing..."
     brew install python@3.11
+    PYTHON_CMD=python3.11
 fi
-echo "✓ Python 3.11 is available"
 echo ""
 
 echo "Step 4: Installing Python dependencies..."
-pip3 install PyGObject pycairo watchdog
+$PYTHON_CMD -m pip install --upgrade pip
+$PYTHON_CMD -m pip install PyGObject pycairo watchdog
 echo "✓ Python dependencies installed"
 echo ""
 
 echo "Step 5: Testing installation..."
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if python3.11 "$SCRIPT_DIR/test_macos_port.py"; then
+if $PYTHON_CMD "$SCRIPT_DIR/test_macos_port.py"; then
     echo "✓ All tests passed!"
 else
     echo "⚠ Some tests failed. The app may still work, but please check the output above."
@@ -57,7 +67,7 @@ echo "============================================"
 echo ""
 echo "To run Hamster Time Tracker:"
 echo "  ./macos/hamster"
-echo "  or: python3.11 src/hamster-cli.py"
+echo "  or: $PYTHON_CMD src/hamster-cli.py"
 echo ""
 echo "For more information, see macos/README_MACOS.md"
 echo ""

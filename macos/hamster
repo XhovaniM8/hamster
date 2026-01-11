@@ -4,5 +4,19 @@
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Run Hamster with Python 3.11 (src is one level up from macos/)
-exec python3.11 "$SCRIPT_DIR/../src/hamster-cli.py" "$@"
+# Find the best available Python 3 version
+PYTHON_CMD=""
+for py in python3.12 python3.11 python3; do
+    if command -v $py &> /dev/null; then
+        PYTHON_CMD=$py
+        break
+    fi
+done
+
+if [ -z "$PYTHON_CMD" ]; then
+    echo "Error: Python 3 not found. Please install Python 3.11 or later."
+    exit 1
+fi
+
+# Run Hamster with Python 3 (src is one level up from macos/)
+exec $PYTHON_CMD "$SCRIPT_DIR/../src/hamster-cli.py" "$@"

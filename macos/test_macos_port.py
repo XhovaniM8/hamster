@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.11
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -10,7 +10,8 @@ import sys
 import os
 
 # Add src to path so we can import hamster modules
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+# This script is in macos/, so we need to go up one level to find src/
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 def test_platform_detection():
     """Test that platform is correctly detected as macOS."""
