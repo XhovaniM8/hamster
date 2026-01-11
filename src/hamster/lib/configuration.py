@@ -25,7 +25,8 @@ import logging
 logger = logging.getLogger(__name__)   # noqa: E402
 
 import os
-from hamster.client import Storage
+# Don't import Storage here to avoid circular import
+# It will be imported lazily in RuntimeStore.storage property
 
 from gi.repository import Gdk as gdk
 from gi.repository import Gio as gio
@@ -107,7 +108,7 @@ class RuntimeStore(Singleton):
     """XXX - kill"""
     data_dir = ""
     home_data_dir = ""
-    storage = None
+    _storage = None
 
     def __init__(self):
         self.version = hamster.__version__
@@ -120,8 +121,24 @@ class RuntimeStore(Singleton):
             self.data_dir = os.path.join(module_dir, '..', '..', '..', 'data')
 
         self.data_dir = os.path.realpath(self.data_dir)
-        self.storage = Storage()
-        self.home_data_dir = os.path.realpath(os.path.join(glib.get_user_data_dir(), "hamster"))
+        # Don't initialize storage here to avoid circular import
+
+        # Platform-aware home data directory
+        import platform as _plat
+        if _plat.system() == 'Darwin':  # macOS
+            home_data = os.path.expanduser('~/Library/Application Support')
+        else:  # Linux and others
+            home_data = glib.get_user_data_dir()
+
+        self.home_data_dir = os.path.realpath(os.path.join(home_data, "hamster"))
+
+    @property
+    def storage(self):
+        """Lazy initialization of storage to avoid circular imports."""
+        if self._storage is None:
+            from hamster.client import Storage
+            self._storage = Storage()
+        return self._storage
 
 
 runtime = RuntimeStore()
@@ -181,4 +198,11 @@ class GSettingsStore(gobject.GObject, Singleton):
         return dt.time(hours, minutes)
 
 
-conf = GSettingsStore()
+# Platform-aware configuration store selection
+import platform as _platform
+if _platform.system() == 'Darwin':  # macOS
+    logger.info("macOS detected - using plist-based configuration")
+    from hamster.lib.configuration_macos import MacOSConfigStore
+    conf = MacOSConfigStore()
+else:  # Linux and others
+    conf = GSettingsStore()

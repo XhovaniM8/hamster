@@ -102,8 +102,17 @@ class Storage(storage.Storage):
         self.run_fixtures()
 
     def __init_db_file(self, database_dir):
+        import platform
         from gi.repository import GLib
-        xdg_data_home = GLib.get_user_data_dir()
+
+        # Platform-aware data directory
+        if platform.system() == 'Darwin':  # macOS
+            # Use macOS standard location: ~/Library/Application Support/Hamster
+            xdg_data_home = os.path.expanduser('~/Library/Application Support')
+            logger.info("macOS detected - using Application Support directory")
+        else:  # Linux and others
+            xdg_data_home = GLib.get_user_data_dir()
+
         if not database_dir:
             database_dir = os.path.join(xdg_data_home, 'hamster')
 

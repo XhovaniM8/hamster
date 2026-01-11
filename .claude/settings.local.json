@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(brew list:*)",
+      "Bash(brew install pygobject3 adwaita-icon-theme)",
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)",
+      "Bash(pip3:*)",
+      "Bash(python3.11:*)",
+      "Bash(chmod:*)",
+      "Bash(brew install:*)"
+    ]
+  }
+}
