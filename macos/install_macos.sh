@@ -42,7 +42,9 @@ echo "✓ Python dependencies installed"
 echo ""
 
 echo "Step 5: Testing installation..."
-if python3.11 test_macos_port.py; then
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if python3.11 "$SCRIPT_DIR/test_macos_port.py"; then
     echo "✓ All tests passed!"
 else
     echo "⚠ Some tests failed. The app may still work, but please check the output above."
@@ -54,7 +56,8 @@ echo "Installation complete!"
 echo "============================================"
 echo ""
 echo "To run Hamster Time Tracker:"
-echo "  python3.11 src/hamster-cli.py"
+echo "  ./macos/hamster"
+echo "  or: python3.11 src/hamster-cli.py"
 echo ""
-echo "For more information, see README_MACOS.md"
+echo "For more information, see macos/README_MACOS.md"
 echo ""

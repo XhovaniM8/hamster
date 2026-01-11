@@ -16,7 +16,7 @@ Some additional information is available in the
 
 A macOS port of Hamster is currently under development and testing. The port maintains the GTK3 interface while adapting the backend for macOS (no D-Bus dependency, native configuration storage).
 
-**For macOS users**: See [README_MACOS.md](README_MACOS.md) for installation and usage instructions.
+**For macOS users**: See [README_MACOS.md](macos/README_MACOS.md) for installation and usage instructions.
 
 **Note**: The macOS port is a work in progress and may have bugs. Feedback and testing are appreciated!
 

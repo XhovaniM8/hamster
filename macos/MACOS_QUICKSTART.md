@@ -6,9 +6,9 @@
 
 ### Option 1: Automated Installation
 
-Run the install script:
+Run the install script from the project root:
 ```bash
-./install_macos.sh
+./macos/install_macos.sh
 ```
 
 ### Option 2: Manual Installation
@@ -21,15 +21,15 @@ Run the install script:
 brew install gtk+3 adwaita-icon-theme python@3.11
 pip3 install PyGObject pycairo watchdog
 
-# 3. Verify installation
-python3.11 test_macos_port.py
+# 3. Verify installation (from project root)
+python3.11 macos/test_macos_port.py
 ```
 
 ## Running Hamster
 
 ### Easy Way
 ```bash
-./hamster
+./macos/hamster
 ```
 
 ### Manual Way

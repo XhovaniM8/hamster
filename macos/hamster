@@ -4,5 +4,5 @@
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Run Hamster with Python 3.11
-exec python3.11 "$SCRIPT_DIR/src/hamster-cli.py" "$@"
+# Run Hamster with Python 3.11 (src is one level up from macos/)
+exec python3.11 "$SCRIPT_DIR/../src/hamster-cli.py" "$@"
