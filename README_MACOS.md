@@ -1,5 +1,9 @@
 # Hamster Time Tracker - macOS Port
 
+> **WORK IN PROGRESS - TESTING PHASE**
+>
+> This macOS port is currently experimental and under active testing. While core functionality works, there may be bugs and rough edges. Testers and feedback are welcome!
+
 This is a macOS port of the Hamster Time Tracker, maintaining the GTK3 interface while adapting the backend for macOS.
 
 ## Status

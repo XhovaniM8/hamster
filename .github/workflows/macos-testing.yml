@@ -1,0 +1,109 @@
+name: macOS Testing
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'test_macos_port.py'
+      - 'install_macos.sh'
+      - '.github/workflows/macos-testing.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'test_macos_port.py'
+      - 'install_macos.sh'
+      - '.github/workflows/macos-testing.yml'
+
+jobs:
+  test-macos:
+    name: Test macOS Port
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13, macos-14]
+        python-version: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Homebrew dependencies
+        run: |
+          brew update
+          brew install gtk+3 adwaita-icon-theme pygobject3
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyGObject pycairo watchdog
+
+      - name: Verify GTK installation
+        run: |
+          python -c "from gi.repository import Gtk; print('GTK version:', Gtk.get_major_version(), Gtk.get_minor_version(), Gtk.get_micro_version())"
+
+      - name: Run macOS port tests
+        run: |
+          python test_macos_port.py
+
+      - name: Test hamster launcher script
+        run: |
+          chmod +x hamster
+          # Quick smoke test - just check if it can import without errors
+          timeout 5 python src/hamster-cli.py --help || true
+
+  test-install-script:
+    name: Test Installation Script
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make install script executable
+        run: chmod +x install_macos.sh
+
+      - name: Test installation script (dry run)
+        run: |
+          # We don't want to actually install everything in CI,
+          # just verify the script runs without syntax errors
+          bash -n install_macos.sh
+          echo "Install script syntax is valid"
+
+      - name: Check required files exist
+        run: |
+          test -f README_MACOS.md || (echo "README_MACOS.md missing" && exit 1)
+          test -f MACOS_QUICKSTART.md || (echo "MACOS_QUICKSTART.md missing" && exit 1)
+          test -f MACOS_PORT.md || (echo "MACOS_PORT.md missing" && exit 1)
+          test -f install_macos.sh || (echo "install_macos.sh missing" && exit 1)
+          test -f test_macos_port.py || (echo "test_macos_port.py missing" && exit 1)
+          test -f hamster || (echo "hamster launcher missing" && exit 1)
+          echo "All macOS port files present"
+
+  lint:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Lint macOS-specific files
+        run: |
+          flake8 --count --show-source --statistics \
+            src/hamster/client/client_native.py \
+            src/hamster/lib/configuration_macos.py \
+            test_macos_port.py

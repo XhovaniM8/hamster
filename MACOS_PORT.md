@@ -1,5 +1,7 @@
 # Hamster macOS Port - Implementation Guide
 
+> **WORK IN PROGRESS**: This document describes the macOS port implementation, which is currently in testing phase.
+
 ## Overview
 
 This document outlines the strategy for porting Hamster Time Tracker to macOS while keeping the GTK3 interface intact.

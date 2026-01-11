@@ -1,5 +1,7 @@
 # Hamster Time Tracker - macOS Quick Start
 
+> **WORK IN PROGRESS**: This macOS port is experimental and under testing. Please report any issues you encounter!
+
 ## Installation (5 minutes)
 
 ### Option 1: Automated Installation

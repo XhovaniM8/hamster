@@ -3,12 +3,22 @@
 Hamster is time tracking for individuals. It helps you to keep track of how
 much time you have spent during the day on activities you choose to track.
 
-This is the main repo. It is standalone (single module).  
-All other repositories -`hamster-lib/dbus/cli/gtk`- are part of the separate rewrite effort.  
+This is the main repo. It is standalone (single module).
+All other repositories -`hamster-lib/dbus/cli/gtk`- are part of the separate rewrite effort.
 More context is given in the history section below.
 
 Some additional information is available in the
 [wiki](https://github.com/projecthamster/hamster/wiki).
+
+## macOS Port (Work In Progress)
+
+**Status**: Experimental - Testing in Progress
+
+A macOS port of Hamster is currently under development and testing. The port maintains the GTK3 interface while adapting the backend for macOS (no D-Bus dependency, native configuration storage).
+
+**For macOS users**: See [README_MACOS.md](README_MACOS.md) for installation and usage instructions.
+
+**Note**: The macOS port is a work in progress and may have bugs. Feedback and testing are appreciated!
 
 ## Installation
 
