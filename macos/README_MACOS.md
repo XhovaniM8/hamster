@@ -8,23 +8,23 @@ This is a macOS port of the Hamster Time Tracker, maintaining the GTK3 interface
 
 ## Status
 
-✅ **Working!** The core functionality is operational on macOS.
+**Working!** The core functionality is operational on macOS.
 
 ### What's Implemented
 
-- ✅ Native storage client (no D-Bus dependency)
-- ✅ macOS plist-based configuration (replaces GSettings)
-- ✅ macOS standard directories (`~/Library/Application Support`)
-- ✅ Platform-aware client selection
-- ✅ GTK3 GUI working on macOS
-- ✅ Basic time tracking functionality
+- Native storage client (no D-Bus dependency)
+- macOS plist-based configuration (replaces GSettings)
+- macOS standard directories (`~/Library/Application Support`)
+- Platform-aware client selection
+- GTK3 GUI working on macOS
+- Basic time tracking functionality
 
 ### What's Pending
 
-- ⏳ File monitoring using watchdog (currently using Gio)
-- ⏳ macOS app bundle (.app) creation
-- ⏳ Menu bar integration (optional)
-- ⏳ macOS native notifications (optional)
+- File monitoring using watchdog (currently using Gio)
+- macOS app bundle (.app) creation
+- Menu bar integration (optional)
+- macOS native notifications (optional)
 
 ## Installation
 
